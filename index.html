@@ -11,6 +11,23 @@
     :root { --pink: #ff6b9d; --purple: #c86dd7; --gold: #ffd700; --light: #fff5fb; --dark: #3a1a4a; }
     html { scroll-behavior: smooth; }
     body { font-family: Nunito, sans-serif; background: var(--light); color: var(--dark); overflow-x: hidden; }
+
+    /* SPLASH SCREEN */
+    #splash {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(135deg, #3a1a4a 0%, #6a2a8a 60%, #c86dd7 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; transition: opacity 0.8s ease;
+    }
+    #splash.hide { opacity: 0; pointer-events: none; }
+    #splash .splash-emoji { font-size: 5rem; animation: pulse 1.5s infinite; margin-bottom: 24px; }
+    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+    #splash h2 { font-family: Dancing Script, cursive; font-size: clamp(2rem,8vw,4.5rem); color: white; text-align: center; margin-bottom: 12px; }
+    #splash p { color: rgba(255,255,255,0.75); font-size: 1.1rem; font-weight: 600; margin-bottom: 40px; text-align: center; padding: 0 20px; }
+    #splash .open-btn { padding: 18px 52px; border: 3px solid white; background: transparent; color: white; border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer; font-family: Nunito, sans-serif; transition: background 0.3s, color 0.3s, transform 0.2s; animation: fadeDown 1s ease 0.5s both; }
+    #splash .open-btn:hover { background: white; color: var(--purple); transform: scale(1.05); }
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+
     #music-bar { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border: 2px solid var(--pink); border-radius: 50px; padding: 10px 18px; box-shadow: 0 4px 20px rgba(255,107,157,0.3); cursor: pointer; transition: transform 0.2s; }
     #music-bar:hover { transform: scale(1.05); }
     #music-bar .note { font-size: 1.4rem; animation: bounce 1s infinite alternate; }
@@ -19,7 +36,7 @@
     #yt-player { display: none; }
     #hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #ffe0f0 0%, #f3d0ff 50%, #ffe8c0 100%); position: relative; overflow: hidden; }
     .balloon { position: absolute; bottom: -120px; font-size: 3rem; animation: floatUp linear infinite; opacity: 0.85; pointer-events: none; }
-    @keyframes floatUp { 0% { transform: translateY(0) rotate(-5deg); opacity:0.9; } 50% { transform: translateY(-50vh) rotate(5deg); } 100% { transform: translateY(-110vh) rotate(-5deg); opacity:0; } }
+    @keyframes floatUp { 0% { transform:translateY(0) rotate(-5deg); opacity:0.9; } 50% { transform:translateY(-50vh) rotate(5deg); } 100% { transform:translateY(-110vh) rotate(-5deg); opacity:0; } }
     #hero .subtitle { font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; color: var(--purple); margin-bottom: 12px; font-weight: 800; animation: fadeDown 0.8s ease both; }
     #hero h1 { font-family: Dancing Script, cursive; font-size: clamp(3rem,10vw,7rem); color: var(--pink); line-height: 1.1; animation: fadeDown 1s ease 0.2s both; }
     #hero h1 span { color: var(--purple); }
@@ -27,7 +44,6 @@
     #hero .tagline { font-size: clamp(1rem,2.5vw,1.4rem); color: #7a3a8a; max-width: 520px; font-weight: 600; line-height: 1.6; animation: fadeDown 1s ease 0.7s both; }
     .hero-btn { margin-top: 32px; padding: 16px 40px; border: none; background: linear-gradient(135deg,var(--pink),var(--purple)); color: white; border-radius: 50px; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 20px rgba(255,107,157,0.4); transition: transform 0.2s; animation: fadeDown 1s ease 0.9s both; font-family: Nunito, sans-serif; }
     .hero-btn:hover { transform: translateY(-3px); }
-    @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
     @keyframes popIn { from { opacity:0; transform:scale(0.3) rotate(-20deg); } to { opacity:1; transform:scale(1) rotate(0deg); } }
     #reasons { padding: 80px 24px; max-width: 860px; margin: 0 auto; text-align: center; }
     #reasons h2 { font-family: Dancing Script, cursive; font-size: clamp(2.2rem,6vw,3.8rem); color: var(--purple); margin-bottom: 12px; }
@@ -59,11 +75,21 @@
   </style>
 </head>
 <body>
+
+  <!-- SPLASH SCREEN -->
+  <div id="splash" onclick="openSurprise()">
+    <div class="splash-emoji">&#127873;</div>
+    <h2>You Have a Surprise!</h2>
+    <p>Someone who loves you very much made this for you.</p>
+    <button class="open-btn">Open Your Surprise &#127873;</button>
+  </div>
+
   <div id="yt-player"></div>
   <div id="music-bar" onclick="toggleMusic()">
     <span class="note" id="music-note">&#127925;</span>
-    <span id="music-label">Play Our Song</span>
+    <span id="music-label">Now Playing &#9836;</span>
   </div>
+
   <section id="hero">
     <div class="balloon" style="left:5%;animation-duration:7s;animation-delay:0s">&#127880;</div>
     <div class="balloon" style="left:20%;animation-duration:9s;animation-delay:1s">&#127872;</div>
@@ -77,6 +103,7 @@
     <p class="tagline">Another year older, another year wiser... or at least that is what we will tell people. &#128516;</p>
     <button class="hero-btn" onclick="launchConfetti()">&#127881; Let's Celebrate! &#127881;</button>
   </section>
+
   <section id="reasons">
     <h2 class="reveal">Why You Are Amazing</h2>
     <p class="section-sub reveal">...just a few of the many, many reasons</p>
@@ -89,6 +116,7 @@
       <div class="reason-card reveal"><div class="icon">&#127829;</div><h3>Excellent Taste</h3><p>In food, in music, in people... we're a little biased on that last one. &#128521;</p></div>
     </div>
   </section>
+
   <section id="message">
     <h2 class="reveal">A Note From Your Biggest Fan</h2>
     <div class="letter reveal">
@@ -99,36 +127,83 @@
       <div class="signature">With all my love, always &#128149;</div>
     </div>
   </section>
+
   <section id="song-section">
     <h2 class="reveal">Our Song &#127925;</h2>
     <p class="reveal">Because it could not be more us.</p>
     <div class="song-card reveal" onclick="toggleMusic()">
-      <div class="play-btn" id="play-icon">&#9654;&#65039;</div>
+      <div class="play-btn" id="play-icon">&#9646;&#9646;</div>
       <div class="song-info">
         <div class="song-title">Bless the Broken Road</div>
         <div class="song-artist">Rascal Flatts</div>
       </div>
     </div>
   </section>
+
   <footer>Made with <span>&#10084;&#65039;</span> just for Jennifer &nbsp;&bull;&nbsp; Happy Birthday babe &#127874;</footer>
+
   <script>
-    let player, musicPlaying = false;
+    let player, musicPlaying = false, playerReady = false;
+
     function onYouTubeIframeAPIReady() {
-      player = new YT.Player('yt-player',{height:'0',width:'0',videoId:'8-vZlrBYLSU',playerVars:{autoplay:0,controls:0},events:{onReady:function(){}}});
+      player = new YT.Player('yt-player', {
+        height:'0', width:'0', videoId:'8-vZlrBYLSU',
+        playerVars:{autoplay:0,controls:0},
+        events:{ onReady: function(){ playerReady = true; } }
+      });
     }
-    const tag = document.createElement('script'); tag.src='https://www.youtube.com/iframe_api'; document.head.appendChild(tag);
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+
+    function openSurprise() {
+      const splash = document.getElementById('splash');
+      splash.classList.add('hide');
+      setTimeout(() => splash.style.display = 'none', 900);
+      launchConfetti();
+      setTimeout(() => {
+        if (playerReady) startMusic();
+        else { const t = setInterval(()=>{ if(playerReady){ startMusic(); clearInterval(t); } }, 200); }
+      }, 300);
+    }
+
+    function startMusic() {
+      player.playVideo();
+      musicPlaying = true;
+      document.getElementById('music-note').innerHTML = '&#127926;';
+      document.getElementById('music-label').textContent = 'Now Playing';
+      document.getElementById('play-icon').innerHTML = '&#9646;&#9646;';
+    }
+
     function toggleMusic() {
       if (!player) return;
-      if (musicPlaying) { player.pauseVideo(); musicPlaying=false; document.getElementById('music-note').innerHTML='&#127925;'; document.getElementById('music-label').textContent='Play Our Song'; document.getElementById('play-icon').innerHTML='&#9654;&#65039;'; }
-      else { player.playVideo(); musicPlaying=true; document.getElementById('music-note').innerHTML='&#127926;'; document.getElementById('music-label').textContent='Now Playing'; document.getElementById('play-icon').innerHTML='&#9646;&#9646;'; }
+      if (musicPlaying) {
+        player.pauseVideo(); musicPlaying = false;
+        document.getElementById('music-note').innerHTML = '&#127925;';
+        document.getElementById('music-label').textContent = 'Play Our Song';
+        document.getElementById('play-icon').innerHTML = '&#9654;&#65039;';
+      } else {
+        player.playVideo(); musicPlaying = true;
+        document.getElementById('music-note').innerHTML = '&#127926;';
+        document.getElementById('music-label').textContent = 'Now Playing';
+        document.getElementById('play-icon').innerHTML = '&#9646;&#9646;';
+      }
     }
+
     function launchConfetti() {
-      const end=Date.now()+4000,colors=['#ff6b9d','#c86dd7','#ffd700','#ff9acd','#b57bee'];
-      (function frame(){confetti({particleCount:5,angle:60,spread:55,origin:{x:0},colors});confetti({particleCount:5,angle:120,spread:55,origin:{x:1},colors});if(Date.now()<end)requestAnimationFrame(frame);})();
+      const end = Date.now() + 4000;
+      const colors = ['#ff6b9d','#c86dd7','#ffd700','#ff9acd','#b57bee'];
+      (function frame(){
+        confetti({particleCount:6,angle:60,spread:55,origin:{x:0},colors});
+        confetti({particleCount:6,angle:120,spread:55,origin:{x:1},colors});
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
     }
-    window.addEventListener('load',()=>setTimeout(launchConfetti,800));
-    const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});},{threshold:0.15});
-    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, {threshold:0.15});
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Jennifer!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --pink: #ff6b9d; --purple: #c86dd7; --gold: #ffd700; --light: #fff5fb; --dark: #3a1a4a; }
+    html { scroll-behavior: smooth; }
+    body { font-family: Nunito, sans-serif; background: var(--light); color: var(--dark); overflow-x: hidden; }
+    #music-bar { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border: 2px solid var(--pink); border-radius: 50px; padding: 10px 18px; box-shadow: 0 4px 20px rgba(255,107,157,0.3); cursor: pointer; transition: transform 0.2s; }
+    #music-bar:hover { transform: scale(1.05); }
+    #music-bar .note { font-size: 1.4rem; animation: bounce 1s infinite alternate; }
+    @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-4px); } }
+    #music-bar span { font-size: 0.85rem; font-weight: 700; color: var(--pink); max-width: 160px; line-height: 1.2; }
+    #yt-player { display: none; }
+    #hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #ffe0f0 0%, #f3d0ff 50%, #ffe8c0 100%); position: relative; overflow: hidden; }
+    .balloon { position: absolute; bottom: -120px; font-size: 3rem; animation: floatUp linear infinite; opacity: 0.85; pointer-events: none; }
+    @keyframes floatUp { 0% { transform: translateY(0) rotate(-5deg); opacity:0.9; } 50% { transform: translateY(-50vh) rotate(5deg); } 100% { transform: translateY(-110vh) rotate(-5deg); opacity:0; } }
+    #hero .subtitle { font-size: 1.1rem; letter-spacing: 4px; text-transform: uppercase; color: var(--purple); margin-bottom: 12px; font-weight: 800; animation: fadeDown 0.8s ease both; }
+    #hero h1 { font-family: Dancing Script, cursive; font-size: clamp(3rem,10vw,7rem); color: var(--pink); line-height: 1.1; animation: fadeDown 1s ease 0.2s both; }
+    #hero h1 span { color: var(--purple); }
+    #hero .hero-emoji { font-size: clamp(3rem,8vw,5rem); margin: 16px 0; animation: popIn 0.6s cubic-bezier(.175,.885,.32,1.275) 0.5s both; }
+    #hero .tagline { font-size: clamp(1rem,2.5vw,1.4rem); color: #7a3a8a; max-width: 520px; font-weight: 600; line-height: 1.6; animation: fadeDown 1s ease 0.7s both; }
+    .hero-btn { margin-top: 32px; padding: 16px 40px; border: none; background: linear-gradient(135deg,var(--pink),var(--purple)); color: white; border-radius: 50px; font-size: 1.1rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 20px rgba(255,107,157,0.4); transition: transform 0.2s; animation: fadeDown 1s ease 0.9s both; font-family: Nunito, sans-serif; }
+    .hero-btn:hover { transform: translateY(-3px); }
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes popIn { from { opacity:0; transform:scale(0.3) rotate(-20deg); } to { opacity:1; transform:scale(1) rotate(0deg); } }
+    #reasons { padding: 80px 24px; max-width: 860px; margin: 0 auto; text-align: center; }
+    #reasons h2 { font-family: Dancing Script, cursive; font-size: clamp(2.2rem,6vw,3.8rem); color: var(--purple); margin-bottom: 12px; }
+    #reasons .section-sub { color: #999; font-size: 1rem; margin-bottom: 48px; font-style: italic; }
+    .reasons-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 20px; }
+    .reason-card { background: white; border-radius: 20px; padding: 28px 20px; box-shadow: 0 4px 20px rgba(200,109,215,0.12); border: 2px solid transparent; transition: transform 0.2s, border-color 0.2s; }
+    .reason-card:hover { transform: translateY(-6px); border-color: var(--pink); }
+    .reason-card .icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .reason-card h3 { font-size: 1.1rem; color: var(--pink); margin-bottom: 8px; font-weight: 800; }
+    .reason-card p { font-size: 0.95rem; color: #666; line-height: 1.5; }
+    #message { background: linear-gradient(135deg,#3a1a4a,#6a2a8a); padding: 80px 24px; text-align: center; color: white; }
+    #message h2 { font-family: Dancing Script, cursive; font-size: clamp(2.2rem,6vw,3.8rem); color: var(--gold); margin-bottom: 32px; }
+    #message .letter { max-width: 640px; margin: 0 auto; font-size: 1.1rem; line-height: 1.9; color: rgba(255,255,255,0.9); }
+    #message .letter p { margin-bottom: 18px; }
+    #message .signature { font-family: Dancing Script, cursive; font-size: 2rem; color: var(--pink); margin-top: 32px; }
+    #song-section { padding: 80px 24px; text-align: center; background: #fff0f7; }
+    #song-section h2 { font-family: Dancing Script, cursive; font-size: clamp(2rem,5vw,3.2rem); color: var(--purple); margin-bottom: 12px; }
+    #song-section p { color: #999; font-style: italic; margin-bottom: 32px; }
+    .song-card { display: inline-flex; align-items: center; gap: 16px; background: white; border-radius: 20px; padding: 20px 32px; box-shadow: 0 4px 24px rgba(200,109,215,0.15); cursor: pointer; border: 2px solid var(--pink); transition: transform 0.2s; }
+    .song-card:hover { transform: scale(1.03); }
+    .song-card .play-btn { width: 52px; height: 52px; background: linear-gradient(135deg,var(--pink),var(--purple)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .song-card .song-info { text-align: left; }
+    .song-card .song-title { font-weight: 800; font-size: 1rem; color: var(--dark); }
+    .song-card .song-artist { font-size: 0.85rem; color: #999; margin-top: 2px; }
+    footer { text-align: center; padding: 40px 20px; background: var(--dark); color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+    footer span { color: var(--pink); }
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <div id="yt-player"></div>
+  <div id="music-bar" onclick="toggleMusic()">
+    <span class="note" id="music-note">&#127925;</span>
+    <span id="music-label">Play Our Song</span>
+  </div>
+  <section id="hero">
+    <div class="balloon" style="left:5%;animation-duration:7s;animation-delay:0s">&#127880;</div>
+    <div class="balloon" style="left:20%;animation-duration:9s;animation-delay:1s">&#127872;</div>
+    <div class="balloon" style="left:40%;animation-duration:11s;animation-delay:0.5s">&#127881;</div>
+    <div class="balloon" style="left:60%;animation-duration:8s;animation-delay:3s">&#127880;</div>
+    <div class="balloon" style="left:80%;animation-duration:10s;animation-delay:1.5s">&#127872;</div>
+    <div class="balloon" style="left:93%;animation-duration:9s;animation-delay:0.8s">&#127881;</div>
+    <p class="subtitle">&#127874; Today is all about you &#127874;</p>
+    <h1>Happy Birthday<br><span>Jennifer!</span></h1>
+    <div class="hero-emoji">&#129395;&#127882;&#127874;&#127882;&#129395;</div>
+    <p class="tagline">Another year older, another year wiser... or at least that is what we will tell people. &#128516;</p>
+    <button class="hero-btn" onclick="launchConfetti()">&#127881; Let's Celebrate! &#127881;</button>
+  </section>
+  <section id="reasons">
+    <h2 class="reveal">Why You Are Amazing</h2>
+    <p class="section-sub reveal">...just a few of the many, many reasons</p>
+    <div class="reasons-grid">
+      <div class="reason-card reveal"><div class="icon">&#128150;</div><h3>The Heart of Our Home</h3><p>You hold this family together with love, patience, and the occasional "don't make me come in there!"</p></div>
+      <div class="reason-card reveal"><div class="icon">&#128514;</div><h3>Funniest Person in the Room</h3><p>Whether you're trying to be or not - honestly, half the time that makes it even better.</p></div>
+      <div class="reason-card reveal"><div class="icon">&#127775;</div><h3>Superwoman in Disguise</h3><p>You do the work of ten people and still somehow find time to make everyone feel loved.</p></div>
+      <div class="reason-card reveal"><div class="icon">&#129504;</div><h3>Smarter Than She Lets On</h3><p>You already know what we're going to say before we say it. Honestly a little scary.</p></div>
+      <div class="reason-card reveal"><div class="icon">&#128081;</div><h3>Queen of This Family</h3><p>The whole kingdom runs because of you, and we all know it.</p></div>
+      <div class="reason-card reveal"><div class="icon">&#127829;</div><h3>Excellent Taste</h3><p>In food, in music, in people... we're a little biased on that last one. &#128521;</p></div>
+    </div>
+  </section>
+  <section id="message">
+    <h2 class="reveal">A Note From Your Biggest Fan</h2>
+    <div class="letter reveal">
+      <p>Jennifer, from the moment you walked into my life, every twisted turn and bumpy road suddenly made sense - because they all led me straight to you.</p>
+      <p>Fourteen years, a bunch of kids, a million memories, and somehow you still put up with me. That alone deserves its own trophy. &#127942;</p>
+      <p>You are the reason this family laughs, loves, and keeps going. You are the best thing that has ever happened to me, and I thank God every single day for blessing this broken road.</p>
+      <p>So on your birthday - eat the cake, skip the diet, and know that you are wildly, completely, embarrassingly loved. &#127874;&#10084;&#65039;</p>
+      <div class="signature">With all my love, always &#128149;</div>
+    </div>
+  </section>
+  <section id="song-section">
+    <h2 class="reveal">Our Song &#127925;</h2>
+    <p class="reveal">Because it could not be more us.</p>
+    <div class="song-card reveal" onclick="toggleMusic()">
+      <div class="play-btn" id="play-icon">&#9654;&#65039;</div>
+      <div class="song-info">
+        <div class="song-title">Bless the Broken Road</div>
+        <div class="song-artist">Rascal Flatts</div>
+      </div>
+    </div>
+  </section>
+  <footer>Made with <span>&#10084;&#65039;</span> just for Jennifer &nbsp;&bull;&nbsp; Happy Birthday babe &#127874;</footer>
+  <script>
+    let player, musicPlaying = false;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('yt-player',{height:'0',width:'0',videoId:'8-vZlrBYLSU',playerVars:{autoplay:0,controls:0},events:{onReady:function(){}}});
+    }
+    const tag = document.createElement('script'); tag.src='https://www.youtube.com/iframe_api'; document.head.appendChild(tag);
+    function toggleMusic() {
+      if (!player) return;
+      if (musicPlaying) { player.pauseVideo(); musicPlaying=false; document.getElementById('music-note').innerHTML='&#127925;'; document.getElementById('music-label').textContent='Play Our Song'; document.getElementById('play-icon').innerHTML='&#9654;&#65039;'; }
+      else { player.playVideo(); musicPlaying=true; document.getElementById('music-note').innerHTML='&#127926;'; document.getElementById('music-label').textContent='Now Playing'; document.getElementById('play-icon').innerHTML='&#9646;&#9646;'; }
+    }
+    function launchConfetti() {
+      const end=Date.now()+4000,colors=['#ff6b9d','#c86dd7','#ffd700','#ff9acd','#b57bee'];
+      (function frame(){confetti({particleCount:5,angle:60,spread:55,origin:{x:0},colors});confetti({particleCount:5,angle:120,spread:55,origin:{x:1},colors});if(Date.now()<end)requestAnimationFrame(frame);})();
+    }
+    window.addEventListener('load',()=>setTimeout(launchConfetti,800));
+    const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});},{threshold:0.15});
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+  </script>
+</body>
+</html>

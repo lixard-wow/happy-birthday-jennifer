@@ -182,7 +182,8 @@
     #hero h1 {
       font-family: Dancing Script, cursive;
       font-size: clamp(3.5rem, 12vw, 8rem);
-      line-height: 1.05;
+      line-height: 1.25;
+      padding-bottom: 0.35em;
       background: linear-gradient(135deg, var(--hot) 0%, var(--purple) 50%, var(--teal) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -553,7 +554,7 @@
       <h3>Superwoman in Disguise</h3>
       <p>You do the work of ten people and still somehow find time to make everyone feel loved.</p>
     </div>
-    <div class="reason-card reveal">
+    <div class="reason-ca2d reveal">
       <span class="icon">&#129504;</span>
       <h3>Smarter Than She Lets On</h3>
       <p>You already know what we&rsquo;re going to say before we say it. Honestly a little scary.</p>
@@ -650,8 +651,8 @@
 
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('yt-player', {
-      height:'0', width:'0', videoId:'8-vZlrBYLSU',
-      playerVars:{autoplay:0, controls:0},
+      height:'1', width:'1', videoId:'8-vZlrBYLSU',
+      playerVars:{autoplay:0, controls:0, playsinline:1},
       events:{ onReady: function() { if (shouldPlayOnReady) startMusic(); } }
     });
   }

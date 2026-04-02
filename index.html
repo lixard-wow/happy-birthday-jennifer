@@ -678,7 +678,7 @@
       <div class="song-artist">Rascal Flatts</div>
       <button class="play-btn" id="play-btn" onclick="toggleSong()" title="Play / Pause">▶</button>
       <p class="song-note">"I think about the years I spent just passing through..."</p>
-      <iframe id="yt-frame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      <iframe id="yt-frame" allow="autoplay; encrypted-media" allowfullscreen tabindex="-1"></iframe>
     </div>
   </section>
 
@@ -816,6 +816,7 @@
     main.classList.add('visible');
     setTimeout(launchConfetti, 200);
     toggleSong();
+    window.scrollTo(0, 0);
   }
 
   /* ─────────────────────────────────────────

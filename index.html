@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
   <title>Happy Birthday Jennifer!</title>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"><\/script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -131,6 +131,7 @@
         #b3d4ff 55%, #b3ffee 75%, #ffe8b3 100%);
       position: relative; overflow: hidden;
     }
+    /* Animated shimmer overlay */
     #hero::before {
       content: '';
       position: absolute; inset: 0;
@@ -139,6 +140,7 @@
     }
     @keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
 
+    /* Balloons */
     .balloon {
       position: absolute; bottom: -140px;
       font-size: clamp(2rem, 5vw, 3.5rem);
@@ -150,6 +152,7 @@
       50%  { transform: translateY(-50vh) rotate(6deg); }
       100% { transform: translateY(-115vh) rotate(-6deg); opacity: 0; }
     }
+    /* Stars scattered */
     .star {
       position: absolute;
       font-size: 1.2rem;
@@ -453,10 +456,15 @@
     footer .footer-emojis { font-size: 1.6rem; margin-bottom: 10px; letter-spacing: 6px; }
     footer span { color: var(--pink); }
 
+    /* ══ SHARED ANIMATIONS ══ */
     @keyframes fadeUp   { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
     @keyframes popIn    { from { opacity:0; transform:scale(0.4) rotate(-15deg); } to { opacity:1; transform:scale(1) rotate(0deg); } }
+
+    /* ══ SCROLL REVEAL ══ */
     .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ══ MOBILE ══ */
     @media (max-width: 600px) {
       #hero { padding: 70px 16px 50px; }
       .reasons-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -475,8 +483,10 @@
 </head>
 <body>
 
+<!-- SPARKLE CANVAS -->
 <canvas id="sparkle-canvas"></canvas>
 
+<!-- SPLASH -->
 <div id="splash" onclick="openSurprise()">
   <div class="splash-rings"></div>
   <div class="gift">&#127873;</div>
@@ -491,6 +501,7 @@
   <span id="music-label">Now Playing &#9836;</span>
 </div>
 
+<!-- HERO -->
 <section id="hero">
   <div class="balloon" style="left:3%;animation-duration:7s;animation-delay:0s">&#127880;</div>
   <div class="balloon" style="left:12%;animation-duration:10s;animation-delay:1.2s">&#127873;</div>
@@ -501,49 +512,96 @@
   <div class="balloon" style="left:75%;animation-duration:11s;animation-delay:1.5s">&#127873;</div>
   <div class="balloon" style="left:86%;animation-duration:8.5s;animation-delay:0.2s">&#127880;</div>
   <div class="balloon" style="left:94%;animation-duration:10s;animation-delay:2.5s">&#127872;</div>
+
   <div class="star" style="top:10%;left:8%;animation-delay:0s">&#11088;</div>
   <div class="star" style="top:20%;left:90%;animation-delay:0.6s">&#10024;</div>
   <div class="star" style="top:60%;left:5%;animation-delay:1.2s">&#11088;</div>
   <div class="star" style="top:70%;left:92%;animation-delay:0.3s">&#10024;</div>
   <div class="star" style="top:40%;left:95%;animation-delay:0.9s">&#11088;</div>
+
   <div class="badge">&#127874; Turning 44 &amp; Still Fabulous &#127874;</div>
   <h1>Happy Birthday<br>Jennifer!</h1>
   <div class="hero-emoji">&#129395; &#127882; &#127874; &#127882; &#129395;</div>
   <p class="tagline">44 years of being absolutely wonderful.<br>And yes, you still look amazing &#128521;</p>
-  <button class="hero-btn" onclick="launchConfetti()">&#127881; Let's Celebrate! &#127881;</button>
+  <button class="hero-btn" onclick="launchConfetti()">&#127881; Let&apos;s Celebrate! &#127881;</button>
 </section>
 
+<!-- AGE BANNER -->
 <div id="age-banner">
   <div class="age-number reveal">44</div>
   <div class="age-label reveal">Years of Being Amazing</div>
   <div class="age-sub reveal">Born April 4, 1982 &mdash; Happy Birthday Jennifer! &#127874;</div>
 </div>
 
+<!-- REASONS -->
 <section id="reasons">
   <h2 class="reveal">Why You Are Amazing</h2>
   <p class="section-sub reveal">...just a few of the many, many reasons</p>
   <div class="reasons-grid">
-    <div class="reason-card reveal"><span class="icon">&#128150;</span><h3>Heart of Our Home</h3><p>You hold this family together with love, patience, and the occasional "don't make me come in there!"</p></div>
-    <div class="reason-card reveal"><span class="icon">&#128514;</span><h3>Funniest in the Room</h3><p>Whether you're trying or not - honestly, half the time that makes it even better.</p></div>
-    <div class="reason-card reveal"><span class="icon">&#127775;</span><h3>Superwoman in Disguise</h3><p>You do the work of ten people and still somehow find time to make everyone feel loved.</p></div>
-    <div class="reason-card reveal"><span class="icon">&#129504;</span><h3>Smarter Than She Lets On</h3><p>You already know what we're going to say before we say it. Honestly a little scary.</p></div>
-    <div class="reason-card reveal"><span class="icon">&#128081;</span><h3>Queen of This Family</h3><p>The whole kingdom runs because of you, and every single one of us knows it.</p></div>
-    <div class="reason-card reveal"><span class="icon">&#127829;</span><h3>Excellent Taste</h3><p>In food, in music, in people... we're a little biased on that last one. &#128521;</p></div>
+    <div class="reason-card reveal">
+      <span class="icon">&#128150;</span>
+      <h3>Heart of Our Home</h3>
+      <p>You hold this family together with love, patience, and the occasional &ldquo;don&rsquo;t make me come in there!&rdquo;</p>
+    </div>
+    <div class="reason-card reveal">
+      <span class="icon">&#128514;</span>
+      <h3>Funniest in the Room</h3>
+      <p>Whether you&rsquo;re trying or not &mdash; honestly, half the time that makes it even better.</p>
+    </div>
+    <div class="reason-card reveal">
+      <span class="icon">&#127775;</span>
+      <h3>Superwoman in Disguise</h3>
+      <p>You do the work of ten people and still somehow find time to make everyone feel loved.</p>
+    </div>
+    <div class="reason-card reveal">
+      <span class="icon">&#129504;</span>
+      <h3>Smarter Than She Lets On</h3>
+      <p>You already know what we&rsquo;re going to say before we say it. Honestly a little scary.</p>
+    </div>
+    <div class="reason-card reveal">
+      <span class="icon">&#128081;</span>
+      <h3>Queen of This Family</h3>
+      <p>The whole kingdom runs because of you, and every single one of us knows it.</p>
+    </div>
+    <div class="reason-card reveal">
+      <span class="icon">&#127829;</span>
+      <h3>Excellent Taste</h3>
+      <p>In food, in music, in people&hellip; we&rsquo;re a little biased on that last one. &#128521;</p>
+    </div>
   </div>
 </section>
 
+<!-- SLIDESHOW -->
 <section id="slideshow-section">
   <div class="slideshow-header">
     <h2 class="reveal">Our Story &#128149;</h2>
-    <p class="reveal">A few beautiful moments - replace with your favorite family photos!</p>
+    <p class="reveal">A few beautiful moments &mdash; replace with your favorite family photos!</p>
   </div>
   <div class="slideshow-track" id="slideshow-track">
-    <div class="slide state-active"><img src="https://picsum.photos/seed/couple1/640/800" alt="Us"/><div class="slide-caption">Us &#128149;</div></div>
-    <div class="slide state-behind"><img src="https://picsum.photos/seed/family2/640/800" alt="Family"/><div class="slide-caption">Our Family &#128106;</div></div>
-    <div class="slide state-behind"><img src="https://picsum.photos/seed/love3/640/800" alt="Together"/><div class="slide-caption">Since 2010 &#127881;</div></div>
-    <div class="slide state-behind"><img src="https://picsum.photos/seed/happy4/640/800" alt="Happy"/><div class="slide-caption">Forever &amp; Always &#10084;&#65039;</div></div>
-    <div class="slide state-behind"><img src="https://picsum.photos/seed/joy5/640/800" alt="Joy"/><div class="slide-caption">Happy Birthday Jennifer &#127874;</div></div>
-    <div class="slide state-behind"><img src="https://picsum.photos/seed/memories6/640/800" alt="Memories"/><div class="slide-caption">44 &amp; Fabulous &#128081;</div></div>
+    <div class="slide state-active" data-index="0">
+      <img src="https://picsum.photos/seed/couple1/640/800" alt="Us"/>
+      <div class="slide-caption">Us &#128149;</div>
+    </div>
+    <div class="slide state-behind" data-index="1">
+      <img src="https://picsum.photos/seed/family2/640/800" alt="Our family"/>
+      <div class="slide-caption">Our Family &#128106;</div>
+    </div>
+    <div class="slide state-behind" data-index="2">
+      <img src="https://picsum.photos/seed/love3/640/800" alt="Together"/>
+      <div class="slide-caption">Since 2010 &#127881;</div>
+    </div>
+    <div class="slide state-behind" data-index="3">
+      <img src="https://picsum.photos/seed/happy4/640/800" alt="Happy times"/>
+      <div class="slide-caption">Forever &amp; Always &#10084;&#65039;</div>
+    </div>
+    <div class="slide state-behind" data-index="4">
+      <img src="https://picsum.photos/seed/joy5/640/800" alt="Joy"/>
+      <div class="slide-caption">Happy Birthday Jennifer &#127874;</div>
+    </div>
+    <div class="slide state-behind" data-index="5">
+      <img src="https://picsum.photos/seed/memories6/640/800" alt="Memories"/>
+      <div class="slide-caption">44 &amp; Fabulous &#128081;</div>
+    </div>
   </div>
   <div class="slide-dots" id="slide-dots">
     <div class="slide-dot active" onclick="goToSlide(0)"></div>
@@ -555,20 +613,22 @@
   </div>
 </section>
 
+<!-- MESSAGE -->
 <section id="message">
   <h2 class="reveal">A Note From Your Biggest Fan</h2>
   <div class="letter reveal">
-    <p>Jennifer, from the moment you walked into my life, every twisted turn and bumpy road suddenly made sense - because they all led me straight to you.</p>
+    <p>Jennifer, from the moment you walked into my life, every twisted turn and bumpy road suddenly made sense &mdash; because they all led me straight to you.</p>
     <p>Fourteen years of marriage, a bunch of kids, a million memories, and 44 years of being the most incredible woman I know. That alone deserves its own trophy. &#127942;</p>
     <p>You are the reason this family laughs, loves, and keeps going. You are the best thing that has ever happened to me, and I thank God every single day for blessing this broken road.</p>
-    <p>So on your birthday - eat the cake, skip the diet, and know that you are wildly, completely, embarrassingly loved. &#127874;&#10084;&#65039;</p>
+    <p>So on your birthday &mdash; eat the cake, skip the diet, and know that you are wildly, completely, embarrassingly loved. &#127874;&#10084;&#65039;</p>
     <span class="signature">With all my love, always &#128149;</span>
   </div>
 </section>
 
+<!-- SONG -->
 <section id="song-section">
   <h2 class="reveal">Our Song &#127925;</h2>
-  <p class="reveal">Because it couldn't be more us.</p>
+  <p class="reveal">Because it couldn&rsquo;t be more us.</p>
   <div class="song-card reveal" onclick="toggleMusic()">
     <div class="play-btn" id="play-icon">&#9646;&#9646;</div>
     <div class="song-info">
@@ -578,12 +638,14 @@
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
   <div class="footer-emojis">&#127874; &#127881; &#128149; &#127881; &#127874;</div>
   Made with <span>&#10084;&#65039;</span> just for Jennifer &nbsp;&bull;&nbsp; Happy Birthday babe &#127874;
 </footer>
 
 <script>
+  // ── YOUTUBE ──
   let player, musicPlaying = false, shouldPlayOnReady = false;
 
   function onYouTubeIframeAPIReady() {
@@ -601,11 +663,13 @@
     const splash = document.getElementById('splash');
     splash.classList.add('hide');
     setTimeout(() => splash.style.display = 'none', 950);
+    // Music FIRST — never blocked by anything else
     if (player && typeof player.playVideo === 'function') {
       startMusic();
     } else {
       shouldPlayOnReady = true;
     }
+    // Confetti optional
     try { launchConfetti(); } catch(e) {}
   }
 
@@ -635,6 +699,7 @@
     }
   }
 
+  // ── CONFETTI ──
   function launchConfetti() {
     if (typeof confetti === 'undefined') return;
     const end = Date.now() + 4500;
@@ -646,6 +711,7 @@
     })();
   }
 
+  // ── SLIDESHOW ──
   let currentSlide = 0, slideTimer = null;
   const totalSlides = 6;
 
@@ -671,34 +737,57 @@
   }
   function stopSlideshow() { clearInterval(slideTimer); slideTimer = null; }
 
+  // ── SPARKLE CANVAS ──
   (function() {
     const canvas = document.getElementById('sparkle-canvas');
     const ctx = canvas.getContext('2d');
     let W, H, particles = [];
     const COLORS = ['#ff4d8d','#aa00ff','#ffd700','#00d4aa','#ff7f00','#ffb3ec'];
-    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize); resize();
-    for (let i = 0; i < 55; i++) {
-      particles.push({ x: Math.random()*1000, y: Math.random()*1000, r: Math.random()*3+1,
-        dx: (Math.random()-0.5)*0.6, dy: (Math.random()-0.5)*0.6,
-        alpha: Math.random(), dalpha: (Math.random()*0.015+0.005)*(Math.random()<0.5?1:-1),
-        color: COLORS[Math.floor(Math.random()*COLORS.length)] });
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
     }
-    function draw() {
-      ctx.clearRect(0,0,W,H);
-      particles.forEach(p => {
-        p.x=(p.x+p.dx+W)%W; p.y=(p.y+p.dy+H)%H;
-        p.alpha+=p.dalpha; if(p.alpha>1||p.alpha<0) p.dalpha*=-1;
-        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fillStyle=p.color; ctx.globalAlpha=Math.max(0,Math.min(1,p.alpha))*0.55; ctx.fill();
+    window.addEventListener('resize', resize);
+    resize();
+
+    for (let i = 0; i < 55; i++) {
+      particles.push({
+        x: Math.random() * 1000,
+        y: Math.random() * 1000,
+        r: Math.random() * 3 + 1,
+        dx: (Math.random() - 0.5) * 0.6,
+        dy: (Math.random() - 0.5) * 0.6,
+        alpha: Math.random(),
+        dalpha: (Math.random() * 0.015 + 0.005) * (Math.random() < 0.5 ? 1 : -1),
+        color: COLORS[Math.floor(Math.random() * COLORS.length)]
       });
-      ctx.globalAlpha=1; requestAnimationFrame(draw);
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => {
+        p.x = (p.x + p.dx + W) % W;
+        p.y = (p.y + p.dy + H) % H;
+        p.alpha += p.dalpha;
+        if (p.alpha > 1 || p.alpha < 0) p.dalpha *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, Math.min(1, p.alpha)) * 0.55;
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(draw);
     }
     draw();
   })();
 
+  // ── SCROLL REVEAL ──
   const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);} });
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>

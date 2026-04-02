@@ -261,7 +261,7 @@
       color: rgba(255,255,255,0.85);
       font-weight: 800;
       margin-top: -8px;
-      position: relative; z-index: 1;
+      position: relative; z-indez: 1;
     }
     #age-banner .age-sub {
       font-size: clamp(0.9rem, 2.5vw, 1.1rem);
@@ -518,7 +518,7 @@
   <div class="star" style="top:20%;left:90%;animation-delay:0.6s">&#10024;</div>
   <div class="star" style="top:60%;left:5%;animation-delay:1.2s">&#11088;</div>
   <div class="star" style="top:70%;left:92%;animation-delay:0.3s">&#10024;</div>
-  <div class="star" style="top:40%;left:95%;animation-delay:0.9s">&#11088;</div>
+  <div class="star" style="top:50%;left:95%;animation-delay:0.9s">&#11088;</div>
 
   <div class="badge">&#127874; Turning 44 &amp; Still Fabulous &#127874;</div>
   <h1>Happy Birthday<br>Jennifer!</h1>
@@ -554,7 +554,7 @@
       <h3>Superwoman in Disguise</h3>
       <p>You do the work of ten people and still somehow find time to make everyone feel loved.</p>
     </div>
-    <div class="reason-ca2d reveal">
+    <div class="reason-card reveal">
       <span class="icon">&#129504;</span>
       <h3>Smarter Than She Lets On</h3>
       <p>You already know what we&rsquo;re going to say before we say it. Honestly a little scary.</p>
@@ -647,13 +647,16 @@
 
 <script>
   // ── YOUTUBE ──
-  let player, musicPlaying = false, shouldPlayOnReady = false;
+  let player, musicPlaying = false, shouldUnmuteOnReady = false;
 
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('yt-player', {
       height:'1', width:'1', videoId:'8-vZlrBYLSU',
-      playerVars:{autoplay:0, controls:0, playsinline:1},
-      events:{ onReady: function() { if (shouldPlayOnReady) startMusic(); } }
+      playerVars:{autoplay:1, controls:0, mute:1, playsinline:1},
+      events:{ onReady: function() {
+        player.mute(); player.playVideo(); // start silently — muted autoplay works on mobile
+        if (shouldUnmuteOnReady) { player.unMute(); player.setVolume(60); }
+      }}
     });
   }
   const ytTag = document.createElement('script');
@@ -664,18 +667,18 @@
     const splash = document.getElementById('splash');
     splash.classList.add('hide');
     setTimeout(() => splash.style.display = 'none', 950);
-    // Music FIRST — never blocked by anything else
-    if (player && typeof player.playVideo === 'function') {
+    // Just unmute the already-playing track — no new playback needed, so iOS allows it
+    if (player && typeof player.unMute === 'function') {
       startMusic();
     } else {
-      shouldPlayOnReady = true;
+      shouldUnmuteOnReady = true; // player still loading — unmute when ready
     }
     // Confetti optional
     try { launchConfetti(); } catch(e) {}
   }
 
   function startMusic() {
-    player.playVideo();
+    player.unMute(); player.setVolume(60);
     musicPlaying = true;
     document.getElementById('music-note').innerHTML = '&#127926;';
     document.getElementById('music-label').textContent = 'Now Playing \u266a';
@@ -745,7 +748,7 @@
     let W, H, particles = [];
     const COLORS = ['#ff4d8d','#aa00ff','#ffd700','#00d4aa','#ff7f00','#ffb3ec'];
 
-    function resize() {
+    function resive() {
       W = canvas.width  = window.innerWidth;
       H = canvas.height = window.innerHeight;
     }

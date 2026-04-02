@@ -848,7 +848,7 @@
     if (!playing) {
       // Set src with autoplay=1 inside the click handler — browsers always allow this
       if (!frame.src || frame.src === window.location.href) {
-        frame.src = 'https://www.youtube.com/embed/8-vZlrBYLSU?autoplay=1&enablejsapi=1&rel=0';
+        frame.src = 'https://www.youtube.com/embed/FaQHyHwFgeg?autoplay=1&enablejsapi=1&rel=0';
       } else {
         frame.contentWindow.postMessage(JSON.stringify({event:"command",func:"playVideo",args:""}), "*");
       }

@@ -517,7 +517,7 @@
     }
 
     /* hidden iframe */
-    #yt-frame { display: none; }
+    #yt-frame { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 
     /* ═══════════════════════════════════════════
        FOOTER
@@ -677,11 +677,7 @@
       <div class="song-artist">Rascal Flatts</div>
       <button class="play-btn" id="play-btn" onclick="toggleSong()" title="Play / Pause">▶</button>
       <p class="song-note">"I think about the years I spent just passing through..."</p>
-      <iframe id="yt-frame"
-        src="https://www.youtube.com/embed/8-vZlrBYLSU?enablejsapi=1&rel=0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen>
-      </iframe>
+      <div id="yt-frame"></div>
     </div>
   </section>
 
@@ -845,10 +841,20 @@
   ytScript.src = 'https://www.youtube.com/iframe_api';
   document.head.appendChild(ytScript);
 
+  let pendingPlay = false;
+
   window.onYouTubeIframeAPIReady = function() {
     ytPlayer = new YT.Player('yt-frame', {
       videoId: '8-vZlrBYLSU',
       playerVars: { autoplay: 0, rel: 0, modestbranding: 1 },
+      events: {
+        onReady: function() {
+          if (pendingPlay) {
+            ytPlayer.playVideo();
+            pendingPlay = false;
+          }
+        }
+      }
     });
   };
 
@@ -856,12 +862,17 @@
     const btn   = document.getElementById('play-btn');
     const vinyl = document.getElementById('vinyl');
     if (!playing) {
-      if (ytPlayer && ytPlayer.playVideo) ytPlayer.playVideo();
+      if (ytPlayer && ytPlayer.playVideo) {
+        ytPlayer.playVideo();
+      } else {
+        pendingPlay = true;
+      }
       btn.textContent = '⏸';
       vinyl.classList.add('playing');
       playing = true;
     } else {
       if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
+      pendingPlay = false;
       btn.textContent = '▶';
       vinyl.classList.remove('playing');
       playing = false;

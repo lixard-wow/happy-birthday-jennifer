@@ -518,7 +518,7 @@
     }
 
     /* hidden iframe */
-    #yt-frame { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+    #yt-frame { position: fixed; bottom: -400px; right: 0; width: 320px; height: 180px; pointer-events: none; }
 
     /* ═══════════════════════════════════════════
        FOOTER
@@ -846,13 +846,13 @@
       if (!frame.src || frame.src === window.location.href) {
         frame.src = 'https://www.youtube.com/embed/8-vZlrBYLSU?autoplay=1&enablejsapi=1&rel=0';
       } else {
-        frame.contentWindow.postMessage('{event:command,func:playVideo,args:}', '*');
+        frame.contentWindow.postMessage(JSON.stringify({event:"command",func:"playVideo",args:""}), "*");
       }
       btn.textContent = '⏸';
       vinyl.classList.add('playing');
       playing = true;
     } else {
-      frame.contentWindow.postMessage('{event:command,func:pauseVideo,args:}', '*');
+      frame.contentWindow.postMessage(JSON.stringify({event:"command",func:"pauseVideo",args:""}), "*");
       btn.textContent = '▶';
       vinyl.classList.remove('playing');
       playing = false;

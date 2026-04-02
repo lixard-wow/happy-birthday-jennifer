@@ -677,7 +677,7 @@
       <div class="song-artist">Rascal Flatts</div>
       <button class="play-btn" id="play-btn" onclick="toggleSong()" title="Play / Pause">▶</button>
       <p class="song-note">"I think about the years I spent just passing through..."</p>
-      <div id="yt-frame"></div>
+      <iframe id="yt-frame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
   </section>
 
@@ -834,45 +834,24 @@
      MUSIC PLAYER
   ───────────────────────────────────────── */
   let playing = false;
-  let ytPlayer = null;
-
-  // Load YouTube IFrame API
-  const ytScript = document.createElement('script');
-  ytScript.src = 'https://www.youtube.com/iframe_api';
-  document.head.appendChild(ytScript);
-
-  let pendingPlay = false;
-
-  window.onYouTubeIframeAPIReady = function() {
-    ytPlayer = new YT.Player('yt-frame', {
-      videoId: '8-vZlrBYLSU',
-      playerVars: { autoplay: 0, rel: 0, modestbranding: 1 },
-      events: {
-        onReady: function() {
-          if (pendingPlay) {
-            ytPlayer.playVideo();
-            pendingPlay = false;
-          }
-        }
-      }
-    });
-  };
 
   function toggleSong() {
     const btn   = document.getElementById('play-btn');
     const vinyl = document.getElementById('vinyl');
+    const frame = document.getElementById('yt-frame');
+
     if (!playing) {
-      if (ytPlayer && ytPlayer.playVideo) {
-        ytPlayer.playVideo();
+      // Set src with autoplay=1 inside the click handler — browsers always allow this
+      if (!frame.src || frame.src === window.location.href) {
+        frame.src = 'https://www.youtube.com/embed/8-vZlrBYLSU?autoplay=1&enablejsapi=1&rel=0';
       } else {
-        pendingPlay = true;
+        frame.contentWindow.postMessage('{event:command,func:playVideo,args:}', '*');
       }
       btn.textContent = '⏸';
       vinyl.classList.add('playing');
       playing = true;
     } else {
-      if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
-      pendingPlay = false;
+      frame.contentWindow.postMessage('{event:command,func:pauseVideo,args:}', '*');
       btn.textContent = '▶';
       vinyl.classList.remove('playing');
       playing = false;

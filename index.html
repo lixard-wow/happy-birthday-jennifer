@@ -72,6 +72,84 @@
     footer span { color: var(--pink); }
     .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── SLIDESHOW ── */
+    #slideshow-section {
+      padding: 0;
+      background: #1a0a2a;
+      position: relative;
+      overflow: hidden;
+    }
+    #slideshow-section .section-label {
+      text-align: center;
+      padding: 48px 20px 0;
+      font-family: Dancing Script, cursive;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--gold);
+    }
+    #slideshow-section .section-sublabel {
+      text-align: center;
+      color: rgba(255,255,255,0.5);
+      font-style: italic;
+      padding: 8px 20px 32px;
+      font-size: 1rem;
+    }
+    .slideshow-track {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      height: 520px;
+      overflow: hidden;
+    }
+    .slide {
+      position: absolute;
+      width: 340px;
+      height: 420px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      transition: transform 0.7s cubic-bezier(.77,0,.18,1), opacity 0.7s ease;
+      border: 3px solid rgba(255,107,157,0.4);
+    }
+    .slide img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .slide .slide-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.75));
+      color: white;
+      padding: 32px 20px 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-align: center;
+      font-family: Dancing Script, cursive;
+      font-size: 1.3rem;
+    }
+    /* Slide states */
+    .slide.state-enter  { transform: translateX(110%); opacity: 0; }
+    .slide.state-active { transform: translateX(0);    opacity: 1; }
+    .slide.state-exit   { transform: translateX(-110%); opacity: 0; }
+    .slide.state-behind { transform: translateX(110%); opacity: 0; transition: none; }
+    /* Slide nav dots */
+    .slide-dots {
+      display: flex; justify-content: center; gap: 10px;
+      padding: 20px 0 48px;
+    }
+    .slide-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      transition: background 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+    .slide-dot.active { background: var(--pink); transform: scale(1.3); }
+    @media (max-width: 480px) {
+      .slide { width: 280px; height: 360px; }
+      .slideshow-track { height: 420px; }
+    }
   </style>
 </head>
 <body>
@@ -102,6 +180,47 @@
     <div class="hero-emoji">&#129395;&#127882;&#127874;&#127882;&#129395;</div>
     <p class="tagline">44 years of being absolutely wonderful. And yes, you still look amazing &#128521;</p>
     <button class="hero-btn" onclick="launchConfetti()">&#127881; Let's Celebrate! &#127881;</button>
+  </section>
+
+
+  <!-- ══ SLIDESHOW ══ -->
+  <section id="slideshow-section">
+    <div class="section-label reveal">Our Story &#128149;</div>
+    <div class="section-sublabel reveal">Replace these with your favorite family photos!</div>
+    <div class="slideshow-track" id="slideshow-track">
+      <div class="slide state-active" data-index="0">
+        <img src="https://picsum.photos/seed/couple1/680/840" alt="Our memories"/>
+        <div class="slide-caption">Us &#128149;</div>
+      </div>
+      <div class="slide state-behind" data-index="1">
+        <img src="https://picsum.photos/seed/family2/680/840" alt="Our family"/>
+        <div class="slide-caption">Our Family &#128106;</div>
+      </div>
+      <div class="slide state-behind" data-index="2">
+        <img src="https://picsum.photos/seed/love3/680/840" alt="Together"/>
+        <div class="slide-caption">Since 2010 &#127881;</div>
+      </div>
+      <div class="slide state-behind" data-index="3">
+        <img src="https://picsum.photos/seed/happy4/680/840" alt="Happy times"/>
+        <div class="slide-caption">Forever &amp; Always &#10084;&#65039;</div>
+      </div>
+      <div class="slide state-behind" data-index="4">
+        <img src="https://picsum.photos/seed/joy5/680/840" alt="Joy"/>
+        <div class="slide-caption">Happy Birthday Jennifer &#127874;</div>
+      </div>
+      <div class="slide state-behind" data-index="5">
+        <img src="https://picsum.photos/seed/memories6/680/840" alt="Memories"/>
+        <div class="slide-caption">44 &amp; Fabulous &#128081;</div>
+      </div>
+    </div>
+    <div class="slide-dots" id="slide-dots">
+      <div class="slide-dot active" onclick="goToSlide(0)"></div>
+      <div class="slide-dot" onclick="goToSlide(1)"></div>
+      <div class="slide-dot" onclick="goToSlide(2)"></div>
+      <div class="slide-dot" onclick="goToSlide(3)"></div>
+      <div class="slide-dot" onclick="goToSlide(4)"></div>
+      <div class="slide-dot" onclick="goToSlide(5)"></div>
+    </div>
   </section>
 
   <section id="reasons">
@@ -175,6 +294,7 @@
     function startMusic() {
       player.playVideo();
       musicPlaying = true;
+      startSlideshow();
       document.getElementById('music-note').innerHTML = '&#127926;';
       document.getElementById('music-label').textContent = 'Now Playing';
       document.getElementById('play-icon').innerHTML = '&#9646;&#9646;';
@@ -184,11 +304,13 @@
       if (!player) return;
       if (musicPlaying) {
         player.pauseVideo(); musicPlaying = false;
+        stopSlideshow();
         document.getElementById('music-note').innerHTML = '&#127925;';
         document.getElementById('music-label').textContent = 'Play Our Song';
         document.getElementById('play-icon').innerHTML = '&#9654;&#65039;';
       } else {
         player.playVideo(); musicPlaying = true;
+        startSlideshow();
         document.getElementById('music-note').innerHTML = '&#127926;';
         document.getElementById('music-label').textContent = 'Now Playing';
         document.getElementById('play-icon').innerHTML = '&#9646;&#9646;';

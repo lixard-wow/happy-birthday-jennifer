@@ -858,6 +858,14 @@
      MUSIC PLAYER
   ───────────────────────────────────────── */
   let playing = false;
+  let ytLoaded = false;
+
+  // Pre-load the YouTube player silently so postMessage works on iOS
+  (function() {
+    const frame = document.getElementById('yt-frame');
+    frame.src = 'https://www.youtube.com/embed/FaQHyHwFgeg?enablejsapi=1&rel=0&playsinline=1';
+    frame.addEventListener('load', function() { ytLoaded = true; }, { once: true });
+  })();
 
   function toggleSong() {
     const btn   = document.getElementById('play-btn');
@@ -865,11 +873,14 @@
     const frame = document.getElementById('yt-frame');
 
     if (!playing) {
-      // Set src with autoplay=1 inside the click handler — browsers always allow this
-      if (!frame.src || frame.src === window.location.href) {
-        frame.src = 'https://www.youtube.com/embed/FaQHyHwFgeg?autoplay=1&enablejsapi=1&rel=0&playsinline=1';
-      } else {
+      // postMessage works on iOS when sent inside a click handler (user gesture)
+      if (ytLoaded) {
         frame.contentWindow.postMessage(JSON.stringify({event:"command",func:"playVideo",args:""}), "*");
+      } else {
+        frame.addEventListener('load', function() {
+          ytLoaded = true;
+          frame.contentWindow.postMessage(JSON.stringify({event:"command",func:"playVideo",args:""}), "*");
+        }, { once: true });
       }
       btn.textContent = '⏸';
       vinyl.classList.add('playing');

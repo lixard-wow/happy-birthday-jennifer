@@ -873,13 +873,18 @@
     const frame = document.getElementById('yt-frame');
 
     if (!playing) {
-      // postMessage works on iOS when sent inside a click handler (user gesture)
-      if (ytLoaded) {
+      function sendPlay() {
         frame.contentWindow.postMessage(JSON.stringify({event:"command",func:"playVideo",args:""}), "*");
+      }
+      if (ytLoaded) {
+        sendPlay();
+        // retry once in case player needs a moment to initialise
+        setTimeout(sendPlay, 800);
       } else {
         frame.addEventListener('load', function() {
           ytLoaded = true;
-          frame.contentWindow.postMessage(JSON.stringify({event:"command",func:"playVideo",args:""}), "*");
+          sendPlay();
+          setTimeout(sendPlay, 800);
         }, { once: true });
       }
       btn.textContent = '⏸';

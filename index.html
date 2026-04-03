@@ -108,23 +108,34 @@
 
     .open-btn {
       position: relative; z-index: 2;
-      padding: 18px 52px;
-      background: linear-gradient(135deg, #c4883a, #a63c22);
-      color: #faf0dc;
+      background: none;
       border: none;
-      border-radius: 60px;
-      font-size: clamp(1rem, 4vw, 1.3rem);
-      font-weight: 900;
-      font-family: 'Lato', sans-serif;
       cursor: pointer;
-      letter-spacing: 0.5px;
-      box-shadow: 0 0 40px rgba(196,136,58,0.4), 0 4px 20px rgba(0,0,0,0.5);
-      animation: fadeDown 0.8s ease 0.6s both, pulseShadow 2.5s ease 1.4s infinite;
-      transition: transform 0.2s, box-shadow 0.2s;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      animation: fadeDown 0.8s ease 0.6s both;
     }
-    .open-btn:hover, .open-btn:active {
-      transform: scale(1.07) translateY(-2px);
-      box-shadow: 0 0 60px rgba(196,136,58,0.6), 0 8px 30px rgba(0,0,0,0.5);
+    .open-btn .gift-emoji {
+      font-size: clamp(5rem, 20vw, 9rem);
+      animation: giftBounce 1.4s ease-in-out infinite, pulseShadow 2.5s ease 1.4s infinite;
+      filter: drop-shadow(0 0 30px rgba(196,136,58,0.6));
+      display: block;
+      transition: transform 0.15s;
+    }
+    .open-btn:hover .gift-emoji,
+    .open-btn:active .gift-emoji {
+      transform: scale(1.15) rotate(5deg);
+    }
+    .open-btn .gift-hint {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(0.85rem, 3vw, 1.1rem);
+      font-weight: 700;
+      color: rgba(240,221,184,0.7);
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
     @keyframes pulseShadow {
       0%,100% { box-shadow: 0 0 40px rgba(196,136,58,0.4), 0 4px 20px rgba(0,0,0,0.5); }
@@ -577,10 +588,12 @@
   <div class="splash-glow splash-glow-2"></div>
   <div class="splash-glow splash-glow-3"></div>
   <div class="splash-rings"></div>
-  <div class="splash-emoji">🌻</div>
   <h2>Psst... this is for you, Jennifer</h2>
   <p class="splash-sub">Someone who loves you very much made this 🤍</p>
-  <button class="open-btn" onclick="openSurprise()">Open Your Surprise 🌿</button>
+  <button class="open-btn" onclick="openSurprise()">
+    <span class="gift-emoji">🎁</span>
+    <span class="gift-hint">Tap to open</span>
+  </button>
 </div>
 
 <!-- ═══════════════════════════════════════════

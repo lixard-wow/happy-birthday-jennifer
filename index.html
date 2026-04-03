@@ -697,7 +697,7 @@
       <div class="song-artist">Rascal Flatts</div>
       <button class="play-btn" id="play-btn" onclick="toggleSong()" title="Play / Pause">▶</button>
       <p class="song-note">"I think about the years I spent just passing through..."</p>
-      <iframe id="yt-frame" allow="autoplay; encrypted-media" allowfullscreen tabindex="-1"></iframe>
+      <iframe id="yt-frame" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen playsinline tabindex="-1"></iframe>
     </div>
   </section>
 
@@ -867,7 +867,7 @@
     if (!playing) {
       // Set src with autoplay=1 inside the click handler — browsers always allow this
       if (!frame.src || frame.src === window.location.href) {
-        frame.src = 'https://www.youtube.com/embed/FaQHyHwFgeg?autoplay=1&enablejsapi=1&rel=0';
+        frame.src = 'https://www.youtube.com/embed/FaQHyHwFgeg?autoplay=1&enablejsapi=1&rel=0&playsinline=1';
       } else {
         frame.contentWindow.postMessage(JSON.stringify({event:"command",func:"playVideo",args:""}), "*");
       }
